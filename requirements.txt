@@ -1,0 +1,6 @@
+streamlit
+SpeechRecognition
+gTTS
+pydub
+simpleaudio
+openai
