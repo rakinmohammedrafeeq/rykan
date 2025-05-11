@@ -7,8 +7,11 @@ from pydub import AudioSegment
 from pydub.playback import play
 import tempfile
 import openai
+# import threading
+import simpleaudio as sa
 
-openai.api_key = "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"
+openai.api_key = st.secrets["GROQ_API_KEY"]
+
 openai.api_base = "https://api.groq.com/openai/v1"
 
 # nlp = transformers.pipeline("text-generation", model="microsoft/DialoGPT-small")
@@ -52,6 +55,9 @@ if "dark_mode" not in st.session_state:
 if "theme_toggle_triggered" not in st.session_state:
     st.session_state.theme_toggle_triggered = False
 
+if "listening" not in st.session_state:
+    st.session_state.listening = False
+
 if st.session_state.reset_input:
     st.session_state.reset_input = False
     if "text_input" in st.session_state:
@@ -64,9 +70,18 @@ def text_to_speech(text):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
             temp_path = fp.name
             tts.save(temp_path)
-        sound = AudioSegment.from_file(temp_path, format="mp3")
-        play(sound)
-        os.remove(temp_path)
+            st.session_state.temp_path = temp_path
+
+        audio = AudioSegment.from_file(temp_path, format="mp3")
+        playback = sa.play_buffer(
+            audio.raw_data,
+            num_channels=audio.channels,
+            bytes_per_sample=audio.sample_width,
+            sample_rate=audio.frame_rate
+        )
+
+        st.session_state.playback_obj = playback
+
     except Exception as e:
         st.error(f"TTS Error: {str(e)}")
 
@@ -88,6 +103,18 @@ mode = st.radio("Input Mode", ["💬 Type", "🎙️ Voice"], horizontal=True)
 user_input = ""
 
 if mode == "💬 Type":
+    if "playback_obj" in st.session_state:
+        try:
+            st.session_state.playback_obj.stop()
+        except Exception:
+            pass
+        st.session_state.playback_obj = None
+
+    temp_path = st.session_state.get("temp_path", "")
+    if temp_path and os.path.exists(temp_path):
+        os.remove(temp_path)
+        st.session_state.temp_path = ""
+
     # default_value = "" if st.session_state.reset_input else st.session_state.get("text_input", "")
     user_input = st.chat_input(
         # "Message input",
@@ -98,8 +125,36 @@ if mode == "💬 Type":
     )
 
 elif mode == "🎙️ Voice":
-    if st.button("🎧 Start Talking", use_container_width=True):
-        user_input = speech_to_text()
+    if "playback_obj" in st.session_state:
+        try:
+            st.session_state.playback_obj.stop()
+        except Exception:
+            pass
+        st.session_state.playback_obj = None
+
+    temp_path = st.session_state.get("temp_path", "")
+    if temp_path and os.path.exists(temp_path):
+        os.remove(temp_path)
+        st.session_state.temp_path = ""
+
+    if st.button("🎧 Start/Stop Talking", use_container_width=True):
+        if "playback_obj" in st.session_state:
+            try:
+                st.session_state.playback_obj.stop()
+            except Exception:
+                pass
+            st.session_state.playback_obj = None
+
+        temp_path = st.session_state.get("temp_path", "")
+        if temp_path and os.path.exists(temp_path):
+            os.remove(temp_path)
+            st.session_state.temp_path = ""
+
+        st.session_state.listening = not st.session_state.get("listening", False)
+
+        if st.session_state.listening:
+            user_input = speech_to_text()
+            st.session_state.listening = False
 
 if user_input and not st.session_state.processing_download and not st.session_state.history_updated:
     with st.spinner("Rykan is thinking..."):
@@ -120,8 +175,24 @@ if user_input and not st.session_state.processing_download and not st.session_st
         except Exception as e:
             st.error(f"Response Error: {str(e)}")
 
-if st.session_state.latest_response and st.button("🔈 Listen to Rykan", use_container_width=True):
-    text_to_speech(st.session_state.latest_response)
+if st.session_state.latest_response:
+    if "processing_audio" not in st.session_state:
+        st.session_state.processing_audio = False
+
+    if st.button("🔈 Listen to Rykan", use_container_width=True):
+        if "playback_obj" in st.session_state:
+            try:
+                st.session_state.playback_obj.stop()
+            except Exception:
+                pass
+            st.session_state.playback_obj = None
+
+        temp_path = st.session_state.get("temp_path", "")
+        if temp_path and os.path.exists(temp_path):
+            os.remove(temp_path)
+            st.session_state.temp_path = ""
+
+        text_to_speech(st.session_state.latest_response)
 
 if st.session_state.history:
     st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
@@ -169,6 +240,7 @@ with st.sidebar:
         st.markdown("**Chat Options**")
 
         st.download_button("💾 Export Chat", data=chat_log, file_name="rykan_chat.txt", use_container_width=True)
+
         if st.button("🧼 New Chat", use_container_width=True):
             st.session_state.history = []
             st.session_state.latest_response = ""
