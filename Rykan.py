@@ -35,9 +35,34 @@ def ask_rykan_groq(prompt):
     )
     return response.choices[0].message.content.strip()
 
-st.set_page_config(page_title="Rykan — Unleash the power of intelligence", page_icon="🤖", layout="wide")
+st.set_page_config(page_title="Rykan - Unleash the Power of Intelligence", page_icon="🤖", layout="wide")
 
-st.markdown("<h1 style='text-align: center;'>🤖 Rykan</h1>", unsafe_allow_html=True)
+st.markdown(f"""
+    <h1 style="
+        text-align: center;
+        font-size: 2.8em;
+        background: linear-gradient(90deg, #00adb5, #0077ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+        text-shadow: 0 0 10px rgba(0, 173, 181, 0.5);
+        font-family: 'Segoe UI', sans-serif;
+        margin-bottom: 0.2em;
+    ">
+        🤖 Rykan
+    </h1>
+    <p style="
+        text-align: center;
+        font-size: 1.2em;
+        color: #cccccc;
+        font-weight: 400;
+        margin-top: 0;
+        text-shadow: 0 0 4px rgba(255, 255, 255, 0.1);
+        text-transform: none;
+    ">
+        — Unleash the Power of Intelligence —
+    </p>
+""", unsafe_allow_html=True)
 
 if "history" not in st.session_state:
     st.session_state.history = []
@@ -267,24 +292,33 @@ st.markdown(f"""
         gap: 10px;
         margin-top: 20px;
     }}
-    .user-msg, .bot-msg {{
-        padding: 14px 18px;
-        border-radius: 18px;
-        max-width: 100%;
-        font-size: 15px;
-        line-height: 1.4;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }}
     .user-msg {{
         align-self: flex-end;
-        background: {'#007AFF' if theme == 'light' else '#2196F3'};
-        color: white;
-        text-align:right;
+        padding: 12px 15px;
+        border-radius: 12px;
+        margin: 8px 0;
+        text-align: right;
+        color: #ecf0f1;
+        border: 1px solid #00adb5;
+        background: linear-gradient(145deg, #2c3e50, #34495e);
+        box-shadow: 0 0 8px rgba(0, 173, 181, 0.7);
+    }}
+    .user-msg b {{
+        color: #00adb5;
     }}
     .bot-msg {{
         align-self: flex-start;
-        background: {'#F1F1F1' if theme == 'light' else '#2c2c2c'};
-        color: {'black' if theme == 'light' else 'white'};
+        padding: 12px 15px;
+        border-radius: 12px;
+        margin: 8px 0;
+        text-align: left;
+        color: #f1f1f1;
+        border: 1px solid #ff6363;
+        background: linear-gradient(145deg, #3a3f44, #444b52);
+        box-shadow: 0 0 8px rgba(255, 99, 99, 0.7);
+    }}
+    .bot-msg b {{
+        color: #ff6363;
     }}
     </style>
 """, unsafe_allow_html=True)
