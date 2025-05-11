@@ -1,1 +1,37 @@
+# TOML configuration files (optional, ignore only if not needed)
 *.toml
+
+# Python bytecode and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Environment variables
+.env
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Project-specific temporary files
+*.log
+*.cache
+*.tmp
+
+# Media or large files (optional, for demos)
+*.mp4
+*.avi
+*.jpg
+*.png
