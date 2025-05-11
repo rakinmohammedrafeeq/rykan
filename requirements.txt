@@ -1,1 +1,6 @@
-requirements.txt
+streamlit
+SpeechRecognition
+gTTS
+pydub
+simpleaudio
+openai
