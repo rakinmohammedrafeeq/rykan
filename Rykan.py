@@ -32,7 +32,7 @@ def ask_rykan_groq(prompt):
     )
     return response.choices[0].message.content.strip()
 
-st.set_page_config(page_title="Rykan", page_icon="🤖", layout="wide")
+st.set_page_config(page_title="Rykan — Unleash the power of intelligence", page_icon="🤖", layout="wide")
 
 st.markdown("<h1 style='text-align: center;'>🤖 Rykan</h1>", unsafe_allow_html=True)
 
@@ -164,10 +164,10 @@ with st.sidebar:
     st.markdown("Version: 1.0.0")
     st.markdown("Developed by Rakin")
 
-    st.markdown("---")
-    st.markdown("**Chat Options**")
-
     if st.session_state.history:
+        st.markdown("---")
+        st.markdown("**Chat Options**")
+
         st.download_button("💾 Export Chat", data=chat_log, file_name="rykan_chat.txt", use_container_width=True)
         if st.button("🧼 New Chat", use_container_width=True):
             st.session_state.history = []
