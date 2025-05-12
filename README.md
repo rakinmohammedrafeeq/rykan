@@ -21,7 +21,6 @@
 
 ## Live Demo
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://rakinmohammedrafeeq-rykan.streamlit.app)  
 Experience Rykan in action – [Launch the Streamlit App](https://rakinmohammedrafeeq-rykan.streamlit.app)
 
 ---
