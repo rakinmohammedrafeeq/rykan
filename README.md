@@ -21,7 +21,8 @@
 
 ## Live Demo
 
-Experience Rykan in action – [Launch the Streamlit App](https://rakinmohammedrafeeq-rykan.streamlit.app/)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://rakinmohammedrafeeq-rykan.streamlit.app)  
+Experience Rykan in action – [Launch the Streamlit App](https://rakinmohammedrafeeq-rykan.streamlit.app)
 
 ---
 
@@ -70,6 +71,10 @@ Install all dependencies via:
 
 ```bash
 pip install -r requirements.txt
+```
+
+```markdown
+> ⚠ **Note:** Make sure `ffmpeg` is installed and added to your system path. It’s required for `pydub` to play audio.
 ```
 
 ## Installation & Usage
