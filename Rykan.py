@@ -95,17 +95,10 @@ def text_to_speech(text):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
             temp_path = fp.name
             tts.save(temp_path)
-            st.session_state.temp_path = temp_path
-
-        audio = AudioSegment.from_file(temp_path, format="mp3")
-        playback = sa.play_buffer(
-            audio.raw_data,
-            num_channels=audio.channels,
-            bytes_per_sample=audio.sample_width,
-            sample_rate=audio.frame_rate
-        )
-
-        st.session_state.playback_obj = playback
+            
+with open(temp_path, "rb") as audio_file:
+            audio_bytes = audio_file.read()
+            st.audio(audio_bytes, format="audio/mp3")
 
     except Exception as e:
         st.error(f"TTS Error: {str(e)}")
