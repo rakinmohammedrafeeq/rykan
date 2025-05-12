@@ -17,9 +17,8 @@
 
 ---
 
-## Demo
-
-🎥 **Coming Soon** – Stay tuned for a walkthrough demo of Rykan in action!
+**Live Demo:**  
+[Click here to chat with Rykan (Streamlit app)](https://your-rykan-app.streamlit.app)
 
 ---
 
