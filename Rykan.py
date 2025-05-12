@@ -8,7 +8,7 @@ from pydub.playback import play
 import tempfile
 import openai
 # import threading
-import simpleaudio as sa
+# import simpleaudio as sa
 
 openai.api_key = st.secrets["GROQ_API_KEY"]
 
