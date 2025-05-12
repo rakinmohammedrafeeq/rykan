@@ -92,22 +92,22 @@ if st.session_state.reset_input:
 
 def text_to_speech(text):
     try:
-        # tts = gTTS(text)
-        # with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
-        #     temp_path = fp.name
-        #     tts.save(temp_path)
+        tts = gTTS(text)
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
+            temp_path = fp.name
+            tts.save(temp_path)
 
-        audio_bytes = BytesIO()
-        tts = gTTS(text=text, lang='en')
-        tts.write_to_fp(audio_bytes)
-        audio_bytes.seek(0)
+        # audio_bytes = BytesIO()
+        # tts = gTTS(text=text, lang='en')
+        # tts.write_to_fp(audio_bytes)
+        # audio_bytes.seek(0)
+        #
+        # audio = AudioSegment.from_mp3(audio_bytes)
+        # play(audio)
 
-        audio = AudioSegment.from_mp3(audio_bytes)
-        play(audio)
-
-        # with open(temp_path, "rb") as audio_file:
-        #     audio_bytes = audio_file.read()
-        #     st.audio(audio_bytes, format="audio/mp3")
+        with open(temp_path, "rb") as audio_file:
+            audio_bytes = audio_file.read()
+            st.audio(audio_bytes, format="audio/mp3", start_time=0)
 
         #     st.session_state.temp_path = temp_path
         #
@@ -197,7 +197,6 @@ elif mode == "🎙️ Voice":
 
 if user_input and not st.session_state.processing_download and not st.session_state.history_updated:
     with st.spinner("Rykan is thinking..."):
-
 
         try:
             response = ask_rykan_groq(user_input)
