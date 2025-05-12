@@ -133,7 +133,7 @@ def speech_to_text():
             st.info("🎤 Listening... Speak now.")
 
             recognizer.adjust_for_ambient_noise(mic, duration=1)
-            audio = recognizer.listen(mic, timeout=5, phrase_time_limit=10)
+            audio = recognizer.listen(mic, timeout=5)
 
             text = recognizer.recognize_google(audio)
             st.success(f"✅ Recognized: {text}")
