@@ -137,8 +137,9 @@ def speech_to_text():
             text = recognizer.recognize_google(audio)
             st.success(f"✅ Recognized: {text}")
             return text
-    except Exception:
-        st.warning("Could not recognize speech.")
+        
+    except Exception as e:
+        st.warning(f"Could not recognize speech. Error: {e}")
         return ""
 
 mode = st.radio("Input Mode", ["💬 Type", "🎙️ Voice"], horizontal=True)
