@@ -39,17 +39,17 @@
 ```
 Rykan/
 │
-├── Rykan.py # Main Streamlit app
+├── Rykan.py                  # Main Streamlit app
 ├── utils/
-│ ├── chat_utils.py # Handles API interaction and message formatting
-│ ├── audio_utils.py # Text-to-speech and audio playback
-│ └── voice_input.py # Converts audio input to text
-├── assets/ # Icons, sound files, or visuals (if any)
+│   ├── chat_utils.py         # Handles Groq API interaction and formatting
+│   ├── audio_utils.py        # Converts text to audio and plays it
+│   └── voice_input.py        # Captures microphone input and converts to text
+├── assets/                   # Contains icons, sounds, or images (if any)
 ├── .streamlit/
-│ └── secrets.toml # Contains Groq API key
-├── requirements.txt # Python dependencies
-├── README.md # Project overview and setup guide
-└── LICENSE # MIT License
+│   └── secrets.toml          # Stores your Groq API key securely
+├── requirements.txt          # Python dependencies
+├── README.md                 # Project overview and setup guide
+└── LICENSE                   # MIT License
 ```
 
 ---
@@ -91,3 +91,38 @@ GROQ_API_KEY = "your_api_key_here"
 streamlit run Rykan.py
 ```
 
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## How It Works
+
+- **Text Interaction**  
+  Type in the chat box and Rykan responds instantly via Groq’s LLaMA3-70B model.
+
+- **Voice Interaction**  
+  Speak into your microphone or upload an audio file. Rykan converts it to text, generates a reply, and plays it back using gTTS.
+
+- **Audio Handling**  
+  gTTS generates the speech, `pydub` processes it, and `simpleaudio` ensures non-blocking playback.
+
+- **Mode Switching & Theme**  
+  Easily switch between light/dark UI and voice/text modes with a single click.
+
+---
+
+## Contact  
+
+For any questions or suggestions, feel free to reach out:  
+📧 **Email:** rakinmohammedrafeeq@gmail.com  
+🔗 **GitHub:** [rakinmohammedrafeeq](https://github.com/rakinmohammedrafeeq)
+
+---
+
+## Support
+
+If you found this project helpful, please consider giving it a ⭐ on GitHub!
