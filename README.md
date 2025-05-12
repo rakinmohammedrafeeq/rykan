@@ -19,7 +19,8 @@
 
 ---
 
-##Live Demo:
+## Live Demo
+
 Experience Rykan in action – [Launch the Streamlit App](https://rakinmohammedrafeeq-rykan.streamlit.app/)
 
 ---
