@@ -86,12 +86,6 @@ if "theme_toggle_triggered" not in st.session_state:
 if "listening" not in st.session_state:
     st.session_state.listening = False
 
-if st.session_state.reset_input:
-    st.session_state.reset_input = False
-    if "text_input" in st.session_state:
-        del st.session_state["text_input"]
-    st.rerun()
-
 def text_to_speech(text):
     try:
         tts = gTTS(text)
@@ -171,33 +165,33 @@ if mode == "💬 Type":
 
 elif mode == "🎙️ Voice":
     # if st.button("🎧 Start/Stop Talking", use_container_width=True):
-        st.markdown("Upload a voice file (.wav, .mp3, .m4a) to talk to Rykan.")
+    st.markdown("Upload a voice file (.wav, .mp3, .m4a) to talk to Rykan.")
 
-        audio_file = st.file_uploader("🎙️ Upload Audio", type=["wav", "mp3", "m4a"])
+    audio_file = st.file_uploader("🎙️ Upload Audio", type=["wav", "mp3", "m4a"])
 
-        if audio_file:
-            recognizer = sr.Recognizer()
+    if audio_file:
+        recognizer = sr.Recognizer()
 
-            if audio_file.type == "audio/x-m4a" or audio_file.name.endswith(".m4a"):
-                audio = AudioSegment.from_file(audio_file, format="m4a")
-                with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
-                    audio.export(tmp.name, format="wav")
-                    audio_path = tmp.name
-            elif audio_file.name.endswith(".mp3"):
-                audio = AudioSegment.from_file(audio_file, format="mp3")
-                with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
-                    audio.export(tmp.name, format="wav")
-                    audio_path = tmp.name
-            else:
-                audio_path = audio_file
+        if audio_file.type == "audio/x-m4a" or audio_file.name.endswith(".m4a"):
+            audio = AudioSegment.from_file(audio_file, format="m4a")
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+                audio.export(tmp.name, format="wav")
+                audio_path = tmp.name
+        elif audio_file.name.endswith(".mp3"):
+            audio = AudioSegment.from_file(audio_file, format="mp3")
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+                audio.export(tmp.name, format="wav")
+                audio_path = tmp.name
+        else:
+            audio_path = audio_file
 
-            try:
-                with sr.AudioFile(audio_path) as source:
-                    audio = recognizer.record(source)
-                user_input = recognizer.recognize_google(audio)
-                st.success(f"✅ Recognized: {user_input}")
-            except Exception as e:
-                st.error(f"Speech recognition failed: {e}")
+        try:
+            with sr.AudioFile(audio_path) as source:
+                audio = recognizer.record(source)
+            user_input = recognizer.recognize_google(audio)
+            st.success(f"✅ Recognized: {user_input}")
+        except Exception as e:
+            st.error(f"Speech recognition failed: {e}")
 
         # if "playback_obj" in st.session_state:
         #     try:
@@ -289,7 +283,9 @@ if st.session_state.history:
 
 with st.sidebar:
     # st.title("⚙️ Settings")
-    st.markdown("**Theme**")
+    # st.markdown("**Theme**")
+    st.subheader("Theme")
+
     dark_mode = st.toggle("🌙 Dark Mode", value=st.session_state.dark_mode)
     if dark_mode != st.session_state.dark_mode:
         st.session_state.dark_mode = dark_mode
@@ -298,34 +294,53 @@ with st.sidebar:
 
     # st.session_state.auto_speak = st.toggle("🗣️ Auto-Speak Responses", value=True)
 
-    st.markdown("---")
-    st.markdown("**About Rykan**")
-    st.markdown("Rykan is your smart AI assistant powered by DialoGPT.")
-    st.markdown("Version: 1.0.0")
-    st.markdown("Developed by Rakin")
+    # st.markdown("---")
+    # st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<hr style='margin: 10px 0;'>", unsafe_allow_html=True)
+
+    # st.markdown("---")
+    st.markdown("<br>", unsafe_allow_html=True)
+    # st.markdown("<hr style='margin: 20px 0;'>", unsafe_allow_html=True)
+
+    with st.expander("About Rykan"):
+        st.markdown("Rykan is your smart AI assistant powered by DialoGPT.")
+        st.markdown("Version: 1.0.0")
+        st.markdown("Developed by Rakin")
+
+    # st.markdown("**About Rykan**")
+    # st.markdown("Rykan is your smart AI assistant powered by DialoGPT.")
+    # st.markdown("Version: 1.0.0")
+    # st.markdown("Developed by Rakin")
 
     if st.session_state.history:
-        st.markdown("---")
-        st.markdown("**Chat Options**")
+        # st.markdown("---")
+        # st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("<hr style='margin: 20px 0;'>", unsafe_allow_html=True)
 
-        st.download_button("💾 Export Chat", data=chat_log, file_name="rykan_chat.txt", use_container_width=True)
+        # st.markdown("---")
+        # st.markdown("<br>", unsafe_allow_html=True)
+        # st.markdown("**Chat Options**")
+        st.subheader("Chat Options")
 
-        if st.button("🧼 New Chat", use_container_width=True):
+        st.download_button("Export Chat", data=chat_log, file_name="rykan_chat.txt", use_container_width=True)
+
+        if st.button("New Chat", use_container_width=True):
             st.session_state.history = []
             st.session_state.latest_response = ""
             st.session_state.processing_download = False
-            st.session_state.reset_input = True
             st.session_state.history_updated = False
             if "text_input" in st.session_state:
                 del st.session_state["text_input"]
             st.success("Conversation reset.")
+            # st.toast("🧹 Conversation reset.")
+
             st.rerun()
 
 theme = "dark" if st.session_state.dark_mode else "light"
 
 st.markdown(f"""
     <style>
-    html, body, [class*="css"]  {{
+    html, body, [class*="css"] {{
         font-family: 'Segoe UI', sans-serif;
         background-color: {'#1e1e1e' if theme == 'dark' else '#ffffff'};
         color: {'#ffffff' if theme == 'dark' else '#000000'};
@@ -338,31 +353,31 @@ st.markdown(f"""
     }}
     .user-msg {{
         align-self: flex-end;
-        padding: 12px 15px;
+        padding: 12px 20px;
         border-radius: 12px;
         margin: 8px 0;
         text-align: right;
-        color: #ecf0f1;
-        border: 1px solid #00adb5;
-        background: linear-gradient(145deg, #2c3e50, #34495e);
-        box-shadow: 0 0 8px rgba(0, 173, 181, 0.7);
+        color: {'#2c3e50' if theme == 'light' else '#ecf0f1'};  /* Light or dark text depending on theme */
+        border: 1px solid {'#008b8b' if theme == 'light' else '#00adb5'};  /* Soft border for light, teal for dark */
+        background-color: {'#ffffff' if theme == 'light' else '#34495e'};  /* White background for light, dark for dark theme */
+        box-shadow: 0 0 8px rgba(0, 173, 181, {'0.4' if theme == 'light' else '0.7'});  /* Soft shadow for light, stronger for dark */
     }}
     .user-msg b {{
-        color: #00adb5;
+        color: {'#00adb5' if theme == 'light' else '#ecf0f1'};  /* Text accent color for user */
     }}
     .bot-msg {{
         align-self: flex-start;
-        padding: 12px 15px;
+        padding: 12px 20px;
         border-radius: 12px;
         margin: 8px 0;
         text-align: left;
-        color: #f1f1f1;
-        border: 1px solid #ff6363;
-        background: linear-gradient(145deg, #3a3f44, #444b52);
-        box-shadow: 0 0 8px rgba(255, 99, 99, 0.7);
+        color: {'#2c3e50' if theme == 'light' else '#f1f1f1'};  /* Light text for light theme, white for dark theme */
+        border: 1px solid {'#ff5c5c' if theme == 'light' else '#ff6363'};  /* Soft red for light, normal red for dark */
+        background-color: {'#ffffff' if theme == 'light' else '#3a3f44'};  /* White background for light, dark for dark theme */
+        box-shadow: 0 0 8px rgba(255, 99, 99, {'0.4' if theme == 'light' else '0.7'});  /* Soft shadow for light, stronger for dark */
     }}
     .bot-msg b {{
-        color: #ff6363;
+        color: {'#ff6363' if theme == 'light' else '#ff5c5c'};  /* Accent color for bot's name */
     }}
     </style>
 """, unsafe_allow_html=True)

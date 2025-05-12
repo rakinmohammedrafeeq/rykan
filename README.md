@@ -72,7 +72,7 @@ Install all dependencies via:
 pip install -r requirements.txt
 ```
 
-> ⚠ **Note:** Make sure `ffmpeg` is installed and added to your system path. It’s required for `pydub` to play audio.
+> **Note:** Make sure `ffmpeg` is installed and added to your system path. It’s required for `pydub` to play audio.
 
 ## Installation & Usage
 
