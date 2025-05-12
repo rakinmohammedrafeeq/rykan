@@ -2,4 +2,4 @@ streamlit
 SpeechRecognition
 gTTS
 pydub
-openai
+openai==0.28
