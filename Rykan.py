@@ -5,6 +5,7 @@ from gtts import gTTS
 import os
 from pydub import AudioSegment
 from pydub.playback import play
+from io import BytesIO
 import tempfile
 import openai
 # import threading
@@ -91,10 +92,15 @@ if st.session_state.reset_input:
 
 def text_to_speech(text):
     try:
-        tts = gTTS(text)
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
-            temp_path = fp.name
-            tts.save(temp_path)
+        # tts = gTTS(text)
+        # with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
+        #     temp_path = fp.name
+        #     tts.save(temp_path)
+
+        tts = gTTS(text=text, lang='en')
+        audio_bytes = BytesIO()
+        tts.write_to_fp(audio_bytes)
+        audio_bytes.seek(0)
 
         # with open(temp_path, "rb") as audio_file:
         #     audio_bytes = audio_file.read()
@@ -102,7 +108,7 @@ def text_to_speech(text):
 
         #     st.session_state.temp_path = temp_path
         #
-        audio = AudioSegment.from_file(temp_path, format="mp3")
+        # audio = AudioSegment.from_file(temp_path, format="mp3")
         # playback = sa.play_buffer(
         #     audio.raw_data,
         #     num_channels=audio.channels,
@@ -110,6 +116,7 @@ def text_to_speech(text):
         #     sample_rate=audio.frame_rate
         # )
 
+        audio = AudioSegment.from_file(audio_bytes, format="mp3")
         play(audio)
 
         # st.session_state.playback_obj = playback
