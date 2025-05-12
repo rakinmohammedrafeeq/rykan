@@ -95,10 +95,24 @@ def text_to_speech(text):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
             temp_path = fp.name
             tts.save(temp_path)
-            
-with open(temp_path, "rb") as audio_file:
-            audio_bytes = audio_file.read()
-            st.audio(audio_bytes, format="audio/mp3")
+
+        # with open(temp_path, "rb") as audio_file:
+        #     audio_bytes = audio_file.read()
+        #     st.audio(audio_bytes, format="audio/mp3")
+
+        #     st.session_state.temp_path = temp_path
+        #
+        audio = AudioSegment.from_file(temp_path, format="mp3")
+        # playback = sa.play_buffer(
+        #     audio.raw_data,
+        #     num_channels=audio.channels,
+        #     bytes_per_sample=audio.sample_width,
+        #     sample_rate=audio.frame_rate
+        # )
+
+        play(audio)
+
+        # st.session_state.playback_obj = playback
 
     except Exception as e:
         st.error(f"TTS Error: {str(e)}")
@@ -176,6 +190,8 @@ elif mode == "🎙️ Voice":
 
 if user_input and not st.session_state.processing_download and not st.session_state.history_updated:
     with st.spinner("Rykan is thinking..."):
+
+
         try:
             response = ask_rykan_groq(user_input)
             # chat = nlp(user_input, max_length=1000, pad_token_id=50256)
@@ -185,7 +201,11 @@ if user_input and not st.session_state.processing_download and not st.session_st
                 response += "."
             st.session_state.history.append(("You", user_input))
             st.session_state.history.append(("Rykan", response))
+
             st.session_state.latest_response = response
+
+            text_to_speech(response)
+
             st.session_state.history_updated = True
 
             user_input = ""
@@ -246,6 +266,8 @@ with st.sidebar:
         st.session_state.dark_mode = dark_mode
         st.session_state.theme_toggle_triggered = True
         st.rerun()
+
+    st.session_state.auto_speak = st.toggle("🗣️ Auto-Speak Responses", value=True)
 
     st.markdown("---")
     st.markdown("**About Rykan**")
