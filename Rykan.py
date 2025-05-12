@@ -97,10 +97,13 @@ def text_to_speech(text):
         #     temp_path = fp.name
         #     tts.save(temp_path)
 
-        tts = gTTS(text=text, lang='en')
         audio_bytes = BytesIO()
+        tts = gTTS(text=text, lang='en')
         tts.write_to_fp(audio_bytes)
         audio_bytes.seek(0)
+
+        audio = AudioSegment.from_mp3(audio_bytes)
+        play(audio)
 
         # with open(temp_path, "rb") as audio_file:
         #     audio_bytes = audio_file.read()
@@ -115,9 +118,6 @@ def text_to_speech(text):
         #     bytes_per_sample=audio.sample_width,
         #     sample_rate=audio.frame_rate
         # )
-
-        audio = AudioSegment.from_file(audio_bytes, format="mp3")
-        play(audio)
 
         # st.session_state.playback_obj = playback
 
