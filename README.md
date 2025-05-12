@@ -1,5 +1,7 @@
 # Rykan – Voice & Text AI Chatbot
 
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://rakinmohammedrafeeq-rykan.streamlit.app/)
+
 **Rykan** is a Streamlit-based chatbot that supports both **voice and text** communication, powered by **LLaMA3-70B via Groq API**. Rykan responds with synthesized speech using **gTTS** and offers a clean, interactive UI for seamless human-AI conversation.
 
 ---
