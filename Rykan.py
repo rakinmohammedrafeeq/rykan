@@ -314,10 +314,10 @@ with st.sidebar:
             st.session_state.history = []
             st.session_state.latest_response = ""
             st.session_state.processing_download = False
-            st.session_state.reset_input = True
+            # st.session_state.reset_input = True
             st.session_state.history_updated = False
-            if "text_input" in st.session_state:
-                del st.session_state["text_input"]
+            # if "text_input" in st.session_state:
+            #     del st.session_state["text_input"]
             st.success("Conversation reset.")
             st.rerun()
 
