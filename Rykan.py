@@ -10,6 +10,8 @@ import tempfile
 import openai
 # import threading
 # import simpleaudio as sa
+from audiorecorder import audiorecorder
+
 
 openai.api_key = st.secrets["GROQ_API_KEY"]
 
@@ -131,15 +133,13 @@ def speech_to_text():
             st.info("🎤 Listening... Speak now.")
 
             recognizer.adjust_for_ambient_noise(mic, duration=1)
-
             audio = recognizer.listen(mic, timeout=5, phrase_time_limit=10)
 
             text = recognizer.recognize_google(audio)
             st.success(f"✅ Recognized: {text}")
             return text
-        
-    except Exception as e:
-        st.warning(f"Could not recognize speech. Error: {e}")
+    except Exception:
+        st.warning("Could not recognize speech.")
         return ""
 
 mode = st.radio("Input Mode", ["💬 Type", "🎙️ Voice"], horizontal=True)
@@ -198,6 +198,20 @@ elif mode == "🎙️ Voice":
 
         if st.session_state.listening:
             user_input = speech_to_text()
+
+            if not user_input:
+                audio_file = st.file_uploader("Or upload an audio file:", type=["wav", "mp3"])
+                if audio_file:
+                    recognizer = sr.Recognizer()
+                    audio_data = sr.AudioFile(audio_file)
+                    with audio_data as source:
+                        audio = recognizer.record(source)
+                    try:
+                        user_input = recognizer.recognize_google(audio)
+                        st.success(f"✅ Recognized from file: {user_input}")
+                    except Exception as e:
+                        st.error(f"Speech recognition failed: {e}")
+
             st.session_state.listening = False
 
 if user_input and not st.session_state.processing_download and not st.session_state.history_updated:
