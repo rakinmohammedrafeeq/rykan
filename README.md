@@ -20,7 +20,7 @@
 ---
 
 **Live Demo:**  
-[Click here to chat with Rykan (Streamlit app)](https://rakinmohammedrafeeq-rykan.streamlit.app/)
+Experience Rykan in action – [Launch the Streamlit App](https://rakinmohammedrafeeq-rykan.streamlit.app/)
 
 ---
 
