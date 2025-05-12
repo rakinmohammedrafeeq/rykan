@@ -204,7 +204,7 @@ if user_input and not st.session_state.processing_download and not st.session_st
 
             st.session_state.latest_response = response
 
-            text_to_speech(response)
+            # text_to_speech(response)
 
             st.session_state.history_updated = True
 
@@ -267,7 +267,7 @@ with st.sidebar:
         st.session_state.theme_toggle_triggered = True
         st.rerun()
 
-    st.session_state.auto_speak = st.toggle("🗣️ Auto-Speak Responses", value=True)
+    # st.session_state.auto_speak = st.toggle("🗣️ Auto-Speak Responses", value=True)
 
     st.markdown("---")
     st.markdown("**About Rykan**")
