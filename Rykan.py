@@ -129,7 +129,11 @@ def speech_to_text():
         recognizer = sr.Recognizer()
         with sr.Microphone() as mic:
             st.info("🎤 Listening... Speak now.")
-            audio = recognizer.listen(mic, timeout=5)
+
+            recognizer.adjust_for_ambient_noise(mic, duration=1)
+
+            audio = recognizer.listen(mic, timeout=5, phrase_time_limit=10)
+
             text = recognizer.recognize_google(audio)
             st.success(f"✅ Recognized: {text}")
             return text
