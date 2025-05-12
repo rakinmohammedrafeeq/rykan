@@ -3,4 +3,3 @@ SpeechRecognition
 gTTS
 pydub
 openai==0.28
-PyAudio
