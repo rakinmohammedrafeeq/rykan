@@ -80,7 +80,9 @@ cd Rykan
 ```
 
 2. **Add Groq API key:**
+
 *Create `.streamlit/secrets.toml` and add:*
+
 ```toml
 GROQ_API_KEY = "your_api_key_here"
 ```
