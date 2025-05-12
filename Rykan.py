@@ -10,7 +10,7 @@ import tempfile
 import openai
 # import threading
 # import simpleaudio as sa
-from audiorecorder import audiorecorder
+# from audiorecorder import audiorecorder
 
 
 openai.api_key = st.secrets["GROQ_API_KEY"]
@@ -60,7 +60,7 @@ st.markdown(f"""
         color: #cccccc;
         font-weight: 400;
         margin-top: 0;
-        text-shadow: 0 0 4px rgba(255, 255, 255, 0.1);
+        text-shadow: 0 0 20px rgba(0, 173, 181, 1), 0 0 30px rgba(0, 173, 181, 0.7);
         text-transform: none;
     ">
         — Unleash the Power of Intelligence —
@@ -160,6 +160,7 @@ if mode == "💬 Type":
         st.session_state.temp_path = ""
 
     # default_value = "" if st.session_state.reset_input else st.session_state.get("text_input", "")
+
     user_input = st.chat_input(
         # "Message input",
         # key="text_input",
@@ -169,50 +170,53 @@ if mode == "💬 Type":
     )
 
 elif mode == "🎙️ Voice":
-    if "playback_obj" in st.session_state:
-        try:
-            st.session_state.playback_obj.stop()
-        except Exception:
-            pass
-        st.session_state.playback_obj = None
+    # if st.button("🎧 Start/Stop Talking", use_container_width=True):
+        st.markdown("Upload a voice file (.wav, .mp3, .m4a) to talk to Rykan.")
 
-    temp_path = st.session_state.get("temp_path", "")
-    if temp_path and os.path.exists(temp_path):
-        os.remove(temp_path)
-        st.session_state.temp_path = ""
+        audio_file = st.file_uploader("🎙️ Upload Audio", type=["wav", "mp3", "m4a"])
 
-    if st.button("🎧 Start/Stop Talking", use_container_width=True):
-        if "playback_obj" in st.session_state:
+        if audio_file:
+            recognizer = sr.Recognizer()
+
+            if audio_file.type == "audio/x-m4a" or audio_file.name.endswith(".m4a"):
+                audio = AudioSegment.from_file(audio_file, format="m4a")
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+                    audio.export(tmp.name, format="wav")
+                    audio_path = tmp.name
+            elif audio_file.name.endswith(".mp3"):
+                audio = AudioSegment.from_file(audio_file, format="mp3")
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+                    audio.export(tmp.name, format="wav")
+                    audio_path = tmp.name
+            else:
+                audio_path = audio_file
+
             try:
-                st.session_state.playback_obj.stop()
-            except Exception:
-                pass
-            st.session_state.playback_obj = None
+                with sr.AudioFile(audio_path) as source:
+                    audio = recognizer.record(source)
+                user_input = recognizer.recognize_google(audio)
+                st.success(f"✅ Recognized: {user_input}")
+            except Exception as e:
+                st.error(f"Speech recognition failed: {e}")
 
-        temp_path = st.session_state.get("temp_path", "")
-        if temp_path and os.path.exists(temp_path):
-            os.remove(temp_path)
-            st.session_state.temp_path = ""
-
-        st.session_state.listening = not st.session_state.get("listening", False)
-
-        if st.session_state.listening:
-            user_input = speech_to_text()
-
-            if not user_input:
-                audio_file = st.file_uploader("Or upload an audio file:", type=["wav", "mp3"])
-                if audio_file:
-                    recognizer = sr.Recognizer()
-                    audio_data = sr.AudioFile(audio_file)
-                    with audio_data as source:
-                        audio = recognizer.record(source)
-                    try:
-                        user_input = recognizer.recognize_google(audio)
-                        st.success(f"✅ Recognized from file: {user_input}")
-                    except Exception as e:
-                        st.error(f"Speech recognition failed: {e}")
-
-            st.session_state.listening = False
+        # if "playback_obj" in st.session_state:
+        #     try:
+        #         st.session_state.playback_obj.stop()
+        #     except Exception:
+        #         pass
+        #     st.session_state.playback_obj = None
+        #
+        # temp_path = st.session_state.get("temp_path", "")
+        # if temp_path and os.path.exists(temp_path):
+        #     os.remove(temp_path)
+        #     st.session_state.temp_path = ""
+        #
+        # st.session_state.listening = not st.session_state.get("listening", False)
+        #
+        # if st.session_state.listening:
+        #     user_input = speech_to_text()
+        #
+        #     st.session_state.listening = False
 
 if user_input and not st.session_state.processing_download and not st.session_state.history_updated:
     with st.spinner("Rykan is thinking..."):
@@ -284,7 +288,7 @@ if st.session_state.history:
     #     st.rerun()
 
 with st.sidebar:
-    st.title("⚙️ Settings")
+    # st.title("⚙️ Settings")
     st.markdown("**Theme**")
     dark_mode = st.toggle("🌙 Dark Mode", value=st.session_state.dark_mode)
     if dark_mode != st.session_state.dark_mode:
