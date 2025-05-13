@@ -126,7 +126,7 @@ This project is licensed under the [MIT License](LICENSE).
 ## Contact  
 
 For any questions or suggestions, feel free to reach out:  
-💼 **LinkedIn**: [Your Name](https://www.linkedin.com/in/your-profile/)  
+💼 **LinkedIn**: [Your Name](www.linkedin.com/in/rakinmohammedrafeeq)  
 🔗 **GitHub**: [rakinmohammedrafeeq](https://github.com/rakinmohammedrafeeq)
 
 ---
