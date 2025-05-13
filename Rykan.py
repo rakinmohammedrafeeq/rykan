@@ -357,13 +357,13 @@ st.markdown(f"""
         border-radius: 12px;
         margin: 8px 0;
         text-align: right;
-        color: {'#2c3e50' if theme == 'light' else '#ecf0f1'};  /* Light or dark text depending on theme */
-        border: 1px solid {'#008b8b' if theme == 'light' else '#00adb5'};  /* Soft border for light, teal for dark */
-        background-color: {'#ffffff' if theme == 'light' else '#34495e'};  /* White background for light, dark for dark theme */
-        box-shadow: 0 0 8px rgba(0, 173, 181, {'0.4' if theme == 'light' else '0.7'});  /* Soft shadow for light, stronger for dark */
+        color: {'#2c3e50' if theme == 'light' else '#ecf0f1'};  
+        border: 1px solid {'#008b8b' if theme == 'light' else '#00adb5'};  
+        background-color: {'#ffffff' if theme == 'light' else '#34495e'};  
+        box-shadow: 0 0 8px rgba(0, 173, 181, {'0.4' if theme == 'light' else '0.7'});  
     }}
     .user-msg b {{
-        color: {'#00adb5' if theme == 'light' else '#ecf0f1'};  /* Text accent color for user */
+        color: {'#00adb5' if theme == 'light' else '#ecf0f1'};  
     }}
     .bot-msg {{
         align-self: flex-start;
@@ -371,13 +371,13 @@ st.markdown(f"""
         border-radius: 12px;
         margin: 8px 0;
         text-align: left;
-        color: {'#2c3e50' if theme == 'light' else '#f1f1f1'};  /* Light text for light theme, white for dark theme */
-        border: 1px solid {'#ff5c5c' if theme == 'light' else '#ff6363'};  /* Soft red for light, normal red for dark */
-        background-color: {'#ffffff' if theme == 'light' else '#3a3f44'};  /* White background for light, dark for dark theme */
-        box-shadow: 0 0 8px rgba(255, 99, 99, {'0.4' if theme == 'light' else '0.7'});  /* Soft shadow for light, stronger for dark */
+        color: {'#2c3e50' if theme == 'light' else '#f1f1f1'};  
+        border: 1px solid {'#ff5c5c' if theme == 'light' else '#ff6363'}; 
+        background-color: {'#ffffff' if theme == 'light' else '#3a3f44'};  
+        box-shadow: 0 0 8px rgba(255, 99, 99, {'0.4' if theme == 'light' else '0.7'});  
     }}
     .bot-msg b {{
-        color: {'#ff6363' if theme == 'light' else '#ff5c5c'};  /* Accent color for bot's name */
+        color: {'#ff6363' if theme == 'light' else '#ff5c5c'}; 
     }}
     </style>
 """, unsafe_allow_html=True)
