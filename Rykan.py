@@ -363,7 +363,7 @@ st.markdown(f"""
         box-shadow: 0 0 8px rgba(0, 173, 181, {'0.4' if theme == 'light' else '0.7'});  
     }}
     .user-msg b {{
-        color: {'#00adb5' if theme == 'light' else '#ecf0f1'};  
+        color: #00adb5;
     }}
     .bot-msg {{
         align-self: flex-start;

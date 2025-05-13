@@ -125,8 +125,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact  
 
-**For any questions or suggestions, feel free to reach out:**  
-**Email**: rakinmohammedrafeeq@gmail.com  
+**For any questions or suggestions, feel free to reach out:**   
 **LinkedIn**: [Rakin Mohammed Rafeeq](https://www.linkedin.com/in/rakinmohammedrafeeq)  
 **GitHub**: [rakinmohammedrafeeq](https://github.com/rakinmohammedrafeeq)
 
