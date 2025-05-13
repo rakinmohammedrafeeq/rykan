@@ -108,16 +108,16 @@ This project is licensed under the [MIT License](LICENSE).
 ## How It Works
 
 - **Text Interaction**  
-  Type in the chat box and Rykan responds instantly via Groq’s LLaMA3-70B model.
+  Type in the chat box and Rykan responds instantly using Groq’s LLaMA3-70B model.
 
 - **Voice Interaction**  
-  Speak into your microphone or upload an audio file. Rykan converts it to text, generates a reply, and plays it back using gTTS.
+  Upload an audio file (`.wav`, `.mp3`, or `.m4a`). Rykan converts your voice to text, generates a reply, and optionally plays it back using gTTS.
 
 - **Audio Handling**  
-  gTTS generates the speech, `pydub` processes it, and `simpleaudio` ensures non-blocking playback.
+  gTTS generates speech, and playback is handled directly in-browser using Streamlit’s audio support.
 
 - **Mode Switching & Theme**  
-  Easily switch between light/dark UI and voice/text modes with a single click.
+  Easily switch between light/dark UI and voice/text input modes with a single click via the sidebar.
 
 ---
 
