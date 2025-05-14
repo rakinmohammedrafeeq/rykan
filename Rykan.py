@@ -252,11 +252,7 @@ if st.session_state.history:
     if mode == "🎙️ Voice":
         st.markdown("""
         <div class="voice-alert">
-<<<<<<< HEAD
             ℹ️ Switch to <b>Text Mode</b> to customize theme, hear responses as audio, or manage chats
-=======
-            ℹ️ Switch to <b>Text Mode</b> to customize theme or clear chat
->>>>>>> 8cd44c16b1ad9551a76f1edba6396376790573e7
         </div>
         <style>
             .voice-alert {
