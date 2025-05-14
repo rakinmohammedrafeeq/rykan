@@ -212,22 +212,23 @@ elif mode == "🎙️ Voice":
         #
         #     st.session_state.listening = False
 
-if mode == "🎙️ Voice":
-    st.markdown("""
-    <div class="voice-alert">
-        ℹ️ Switch to <b>Text Mode</b> to customize theme or clear chat
-    </div>
-    <style>
-        .voice-alert {
-            background: rgba(0, 173, 181, 0.15);
-            padding: 10px 16px;
-            border-radius: 8px;
-            margin: 8px 0 16px 0;
-            font-size: 14px;
-            border-left: 3px solid #00adb5;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+if st.session_state.history:
+    if mode == "🎙️ Voice":
+        st.markdown("""
+        <div class="voice-alert">
+            ℹ️ Switch to <b>Text Mode</b> to customize theme or clear chat
+        </div>
+        <style>
+            .voice-alert {
+                background: rgba(0, 173, 181, 0.15);
+                padding: 10px 16px;
+                border-radius: 8px;
+                margin: 8px 0 16px 0;
+                font-size: 14px;
+                border-left: 3px solid #00adb5;
+            }
+        </style>
+        """, unsafe_allow_html=True)
 
 if user_input and not st.session_state.processing_download and not st.session_state.history_updated:
     with st.spinner("Rykan is thinking..."):
