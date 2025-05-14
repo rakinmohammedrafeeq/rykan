@@ -139,6 +139,7 @@ def speech_to_text():
 mode = st.radio("Input Mode", ["💬 Type", "🎙️ Voice"], horizontal=True)
 
 user_input = ""
+user_voice_input=""
 
 if mode == "💬 Type":
     if "playback_obj" in st.session_state:
@@ -171,6 +172,7 @@ elif mode == "🎙️ Voice":
 
     if audio_file:
         recognizer = sr.Recognizer()
+        audio_path = None
 
         if audio_file.type == "audio/x-m4a" or audio_file.name.endswith(".m4a"):
             audio = AudioSegment.from_file(audio_file, format="m4a")
@@ -184,14 +186,48 @@ elif mode == "🎙️ Voice":
                 audio_path = tmp.name
         else:
             audio_path = audio_file
+            # with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+            #     tmp.write(audio_file.read())
+            #     audio_path = tmp.name
 
         try:
             with sr.AudioFile(audio_path) as source:
                 audio = recognizer.record(source)
-            user_input = recognizer.recognize_google(audio)
-            st.success(f"✅ Recognized: {user_input}")
+                user_voice_input = recognizer.recognize_google(audio)
+                # user_input = recognizer.recognize_google(audio)
+                st.success(f"✅ Recognized: {user_voice_input}")
+                # st.success(f"✅ Recognized: {user_input}")
+
         except Exception as e:
             st.error(f"Speech recognition failed: {e}")
+
+        # finally:
+        #     if audio_path and os.path.exists(audio_path):
+        #         os.remove(audio_path)
+
+if user_voice_input and not st.session_state.processing_download and not st.session_state.history_updated:
+    with st.spinner("Rykan is thinking..."):
+        try:
+            response = ask_rykan_groq(user_voice_input)
+
+            # chat = nlp(user_input, max_length=1000, pad_token_id=50256)
+            # response = chat[0]['generated_text'].capitalize()
+
+            if not response.endswith((".", "?", "!")):
+                response += "."
+            st.session_state.history.append(("You", user_voice_input))
+            st.session_state.history.append(("Rykan", response))
+
+            st.session_state.latest_response = response
+
+            # text_to_speech(response)
+
+            st.session_state.history_updated = True
+
+            user_voice_input = ""
+
+        except Exception as e:
+            st.error(f"Response Error: {str(e)}")
 
         # if "playback_obj" in st.session_state:
         #     try:
@@ -212,28 +248,30 @@ elif mode == "🎙️ Voice":
         #
         #     st.session_state.listening = False
 
-if mode == "🎙️ Voice":
-    st.markdown("""
-    <div class="voice-alert">
-        ℹ️ Switch to <b>Text Mode</b> to customize theme or clear chat
-    </div>
-    <style>
-        .voice-alert {
-            background: rgba(0, 173, 181, 0.15);
-            padding: 10px 16px;
-            border-radius: 8px;
-            margin: 8px 0 16px 0;
-            font-size: 14px;
-            border-left: 3px solid #00adb5;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+if st.session_state.history:
+    if mode == "🎙️ Voice":
+        st.markdown("""
+        <div class="voice-alert">
+            ℹ️ Switch to <b>Text Mode</b> to customize theme, hear responses as audio, or manage chats
+        </div>
+        <style>
+            .voice-alert {
+                background: rgba(0, 173, 181, 0.15);
+                padding: 10px 16px;
+                border-radius: 8px;
+                margin: 8px 0 16px 0;
+                font-size: 14px;
+                border-left: 3px solid #00adb5;
+            }
+        </style>
+        """, unsafe_allow_html=True)
 
 if user_input and not st.session_state.processing_download and not st.session_state.history_updated:
     with st.spinner("Rykan is thinking..."):
 
         try:
             response = ask_rykan_groq(user_input)
+
             # chat = nlp(user_input, max_length=1000, pad_token_id=50256)
             # response = chat[0]['generated_text'].capitalize()
 
@@ -257,20 +295,22 @@ if st.session_state.latest_response:
     if "processing_audio" not in st.session_state:
         st.session_state.processing_audio = False
 
-    if st.button("🔈 Listen to Rykan", use_container_width=True):
-        if "playback_obj" in st.session_state:
-            try:
-                st.session_state.playback_obj.stop()
-            except Exception:
-                pass
-            st.session_state.playback_obj = None
+    if not mode == "🎙️ Voice":
 
-        temp_path = st.session_state.get("temp_path", "")
-        if temp_path and os.path.exists(temp_path):
-            os.remove(temp_path)
-            st.session_state.temp_path = ""
+        if st.button("🔈 Listen to Rykan", use_container_width=True):
+            if "playback_obj" in st.session_state:
+                try:
+                    st.session_state.playback_obj.stop()
+                except Exception:
+                    pass
+                st.session_state.playback_obj = None
 
-        text_to_speech(st.session_state.latest_response)
+            temp_path = st.session_state.get("temp_path", "")
+            if temp_path and os.path.exists(temp_path):
+                os.remove(temp_path)
+                st.session_state.temp_path = ""
+
+            text_to_speech(st.session_state.latest_response)
 
 if st.session_state.history:
     st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
@@ -298,9 +338,10 @@ if st.session_state.history:
     #     st.success("Conversation reset.")
     #     st.rerun()
 
-with st.sidebar:
+with (st.sidebar):
     if not mode == "🎙️ Voice":
         if st.session_state.history:
+            # and user_input and user_voice_input:
             # st.title("⚙️ Settings")
             # st.markdown("**Theme**")
             st.subheader("Theme")
@@ -331,27 +372,29 @@ with st.sidebar:
     # st.markdown("Version: 1.0.0")
     # st.markdown("Developed by Rakin")
 
-    if st.session_state.history:
-        # st.markdown("---")
-        # st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("<hr style='margin: 20px 0;'>", unsafe_allow_html=True)
+    if not mode == "🎙️ Voice":
 
-        # st.markdown("---")
-        # st.markdown("<br>", unsafe_allow_html=True)
-        # st.markdown("**Chat Options**")
-        st.subheader("Chat Options")
+        if st.session_state.history:
+            # st.markdown("---")
+            # st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("<hr style='margin: 20px 0;'>", unsafe_allow_html=True)
 
-        st.download_button("Export Chat", data=chat_log, file_name="rykan_chat.txt", use_container_width=True)
+            # st.markdown("---")
+            # st.markdown("<br>", unsafe_allow_html=True)
+            # st.markdown("**Chat Options**")
+            st.subheader("Chat Options")
+
+            st.download_button("Export Chat", data=chat_log, file_name="rykan_chat.txt", use_container_width=True)
 
 
-        if not mode == "🎙️ Voice":
+            # if not mode == "🎙️ Voice":
             if st.button("New Chat", use_container_width=True):
                 st.session_state.history = []
                 st.session_state.latest_response = ""
                 st.session_state.processing_download = False
                 st.session_state.history_updated = False
-                if "text_input" in st.session_state:
-                    del st.session_state["text_input"]
+                # if "text_input" in st.session_state:
+                #     del st.session_state["text_input"]
                 st.success("Conversation reset.")
                 # st.toast("🧹 Conversation reset.")
 
