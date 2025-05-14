@@ -212,6 +212,23 @@ elif mode == "🎙️ Voice":
         #
         #     st.session_state.listening = False
 
+if mode == "🎙️ Voice":
+    st.markdown("""
+    <div class="voice-alert">
+        ℹ️ Switch to <b>Text Mode</b> to customize theme or clear chat
+    </div>
+    <style>
+        .voice-alert {
+            background: rgba(0, 173, 181, 0.15);
+            padding: 10px 16px;
+            border-radius: 8px;
+            margin: 8px 0 16px 0;
+            font-size: 14px;
+            border-left: 3px solid #00adb5;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
 if user_input and not st.session_state.processing_download and not st.session_state.history_updated:
     with st.spinner("Rykan is thinking..."):
 
@@ -282,26 +299,27 @@ if st.session_state.history:
     #     st.rerun()
 
 with st.sidebar:
-    if st.session_state.history:
-        # st.title("⚙️ Settings")
-        # st.markdown("**Theme**")
-        st.subheader("Theme")
+    if not mode == "🎙️ Voice":
+        if st.session_state.history:
+            # st.title("⚙️ Settings")
+            # st.markdown("**Theme**")
+            st.subheader("Theme")
 
-        dark_mode = st.toggle("🌙 Dark Mode", value=st.session_state.dark_mode)
-        if dark_mode != st.session_state.dark_mode:
-            st.session_state.dark_mode = dark_mode
-            st.session_state.theme_toggle_triggered = True
-            st.rerun()
+            dark_mode = st.toggle("🌙 Dark Mode", value=st.session_state.dark_mode)
+            if dark_mode != st.session_state.dark_mode:
+                st.session_state.dark_mode = dark_mode
+                st.session_state.theme_toggle_triggered = True
+                st.rerun()
 
-        # st.session_state.auto_speak = st.toggle("🗣️ Auto-Speak Responses", value=True)
+            # st.session_state.auto_speak = st.toggle("🗣️ Auto-Speak Responses", value=True)
 
-        # st.markdown("---")
-        # st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("<hr style='margin: 10px 0;'>", unsafe_allow_html=True)
+            # st.markdown("---")
+            # st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("<hr style='margin: 10px 0;'>", unsafe_allow_html=True)
 
-        # st.markdown("---")
-        st.markdown("<br>", unsafe_allow_html=True)
-        # st.markdown("<hr style='margin: 20px 0;'>", unsafe_allow_html=True)
+            # st.markdown("---")
+            st.markdown("<br>", unsafe_allow_html=True)
+            # st.markdown("<hr style='margin: 20px 0;'>", unsafe_allow_html=True)
 
     with st.expander("About Rykan"):
         st.markdown("Rykan is your smart AI assistant powered by DialoGPT.")
@@ -325,17 +343,19 @@ with st.sidebar:
 
         st.download_button("Export Chat", data=chat_log, file_name="rykan_chat.txt", use_container_width=True)
 
-        if st.button("New Chat", use_container_width=True):
-            st.session_state.history = []
-            st.session_state.latest_response = ""
-            st.session_state.processing_download = False
-            st.session_state.history_updated = False
-            if "text_input" in st.session_state:
-                del st.session_state["text_input"]
-            st.success("Conversation reset.")
-            # st.toast("🧹 Conversation reset.")
 
-            st.rerun()
+        if not mode == "🎙️ Voice":
+            if st.button("New Chat", use_container_width=True):
+                st.session_state.history = []
+                st.session_state.latest_response = ""
+                st.session_state.processing_download = False
+                st.session_state.history_updated = False
+                if "text_input" in st.session_state:
+                    del st.session_state["text_input"]
+                st.success("Conversation reset.")
+                # st.toast("🧹 Conversation reset.")
+
+                st.rerun()
 
 theme = "dark" if st.session_state.dark_mode else "light"
 
