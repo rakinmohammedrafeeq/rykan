@@ -282,25 +282,26 @@ if st.session_state.history:
     #     st.rerun()
 
 with st.sidebar:
-    # st.title("⚙️ Settings")
-    # st.markdown("**Theme**")
-    st.subheader("Theme")
+    if st.session_state.history:
+        # st.title("⚙️ Settings")
+        # st.markdown("**Theme**")
+        st.subheader("Theme")
 
-    dark_mode = st.toggle("🌙 Dark Mode", value=st.session_state.dark_mode)
-    if dark_mode != st.session_state.dark_mode:
-        st.session_state.dark_mode = dark_mode
-        st.session_state.theme_toggle_triggered = True
-        st.rerun()
+        dark_mode = st.toggle("🌙 Dark Mode", value=st.session_state.dark_mode)
+        if dark_mode != st.session_state.dark_mode:
+            st.session_state.dark_mode = dark_mode
+            st.session_state.theme_toggle_triggered = True
+            st.rerun()
 
-    # st.session_state.auto_speak = st.toggle("🗣️ Auto-Speak Responses", value=True)
+        # st.session_state.auto_speak = st.toggle("🗣️ Auto-Speak Responses", value=True)
 
-    # st.markdown("---")
-    # st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("<hr style='margin: 10px 0;'>", unsafe_allow_html=True)
+        # st.markdown("---")
+        # st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("<hr style='margin: 10px 0;'>", unsafe_allow_html=True)
 
-    # st.markdown("---")
-    st.markdown("<br>", unsafe_allow_html=True)
-    # st.markdown("<hr style='margin: 20px 0;'>", unsafe_allow_html=True)
+        # st.markdown("---")
+        st.markdown("<br>", unsafe_allow_html=True)
+        # st.markdown("<hr style='margin: 20px 0;'>", unsafe_allow_html=True)
 
     with st.expander("About Rykan"):
         st.markdown("Rykan is your smart AI assistant powered by DialoGPT.")
