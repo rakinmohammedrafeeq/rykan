@@ -8,14 +8,15 @@
 
 ## Features
 
-- **Text Mode** – Type your messages and get intelligent replies
-- **Voice Mode** – Speak directly and hear Rykan respond
-- **Voice Output** – Converts replies into natural speech (gTTS + pydub)
-- **Non-blocking Playback** – Uses `simpleaudio` for smooth, responsive experience
-- **Theme Toggle** – Switch between light and dark modes
-- **Chat Export** – Save conversation history as a `.txt` file
-- **Reset Chat** – Start fresh with a click
-- **API Integration** – Connects to Groq’s blazing-fast LLaMA3-70B model
+- **Text Mode** – Type messages and receive intelligent responses from Rykan
+- **Voice Mode** – Upload voice recordings and have Rykan transcribe and respond
+- **Voice Output** – Converts Rykan’s replies into natural-sounding speech (gTTS + pydub)
+- **Dark/Light Theme** – Toggle between sleek dark mode and clean light mode
+- **Chat Export** – Download your entire conversation history as a `.txt` file
+- **Reset Chat** – Instantly start a new conversation with one click
+- **Groq API Integration** – Powered by Groq's lightning-fast LLaMA3-70B model
+- **Streamlit UI** – Clean, modern, and responsive web interface
+- **Secure Audio Handling** – Supports `.wav`, `.mp3`, and `.m4a` voice uploads with conversion
 
 ---
 
