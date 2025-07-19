@@ -42,7 +42,7 @@ Experience Rykan in action – [Launch the Streamlit App](https://rakinmohammedr
 ```
 Rykan/
 │
-├── Rykan.py                  # Main Streamlit app
+├── rykan.py                  # Main Streamlit app
 ├── utils/
 │   ├── chat_utils.py         # Handles Groq API interaction and formatting
 │   ├── audio_utils.py        # Converts text to audio and plays it
@@ -97,7 +97,7 @@ GROQ_API_KEY = "your_api_key_here"
 3. **Run the chatbot:**
 
 ```bash
-streamlit run Rykan.py
+streamlit run rykan.py
 ```
 
 ---
