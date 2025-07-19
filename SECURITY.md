@@ -18,7 +18,6 @@ If you discover a **security vulnerability in Rykan**, especially related to:
 
 Instead, report it privately:
 
-- **Email:** rakinmohammedrafeeq@gmail.com  
 - **LinkedIn:** [Rakin Mohammed Rafeeq](https://www.linkedin.com/in/rakinmohammedrafeeq)
 
 We appreciate your responsible disclosure and will act swiftly.
